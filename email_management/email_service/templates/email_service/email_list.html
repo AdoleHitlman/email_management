@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Список рассылок</title>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'email_list' %}">Список рассылок</a>
+        <a href="{% url 'email_new' %}">Создать рассылку</a>
+    </nav>
+    <h1>Список рассылок</h1>
+    <ul>
+    {% for email in emails %}
+        <li><a href="{% url 'email_detail' pk=email.pk %}">{{ email.subject }}</a></li>
+    {% empty %}
+        <li>Нет рассылок</li>
+    {% endfor %}
+    </ul>
+</body>
+</html>

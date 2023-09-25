@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Создание нового письма</title>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'email_list' %}">Список писем</a>
+        <a href="{% url 'email_new' %}">Создать письмо</a>
+    </nav>
+    <h1>Создание нового письма</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="subject">Тема:</label>
+        <input type="text" name="subject" id="subject">
+        <br>
+        <label for="body">Текст:</label>
+        <textarea name="body" id="body"></textarea>
+        <br>
+        <input type="submit" value="Отправить">
+    </form>
+</body>
+</html>

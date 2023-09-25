@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Редактирование рассылки</title>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'email_list' %}">Список рассылок</a>
+        <a href="{% url 'email_new' %}">Создать рассылку</a>
+    </nav>
+    <h1>Редактирование рассылки</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="subject">Тема:</label>
+        <input type="text" name="subject" id="subject" value="{{ email.subject }}">
+        <br>
+        <label for="body">Текст:</label>
+        <textarea name="body" id="body">{{ email.body }}</textarea>
+        <br>
+        <input type="submit" value="Сохранить">
+    </form>
+</body>
+</html>

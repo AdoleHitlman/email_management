@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Детали рассылки</title>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'email_list' %}">Список рассылок</a>
+        <a href="{% url 'email_new' %}">Создать рассылку</a>
+    </nav>
+    <h1>Детали рассылки</h1>
+    <h2>{{ email.subject }}</h2>
+    <p>{{ email.body }}</p>
+</body>
+</html>

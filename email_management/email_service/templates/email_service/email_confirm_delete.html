@@ -1,0 +1,8 @@
+<h2>Вы уверены что хотите удалить рассылку?</h2>
+<p>Время: {{ email.email_time }}</p>
+<p>Частота: {{ email.frequency }}</p>
+<p>Состояние: {{ email.status }}</p>
+<form method="post">
+  {% csrf_token %}
+  <button type="submit">Удалить</button>
+</form>
