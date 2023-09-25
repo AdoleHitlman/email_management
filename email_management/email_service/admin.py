@@ -1,7 +1,11 @@
 from django.contrib import admin
 
-from email_service.models import Client, MarketingEmail, Message, EmailLog
+from email_service.models import Client, MarketingEmail, Message, EmailLog,User
 
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    list_display = ('username', 'email', 'is_staff')
+    # другие опции админки
 
 # Register your models here.
 @admin.register(Client)

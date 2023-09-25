@@ -7,8 +7,11 @@ from django.views.generic import UpdateView
 from email_service.models import MarketingEmail
 from django.views.generic import TemplateView
 from django.urls import reverse_lazy
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import cache_page
 # Create your views here.
-
+@login_required
+@cache_page(60 * 15)
 class MainView(TemplateView):
     template_name = 'main.html'
 

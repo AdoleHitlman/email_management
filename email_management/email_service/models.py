@@ -1,6 +1,20 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import AbstractUser
+
+
 # Create your models here.
+class User(AbstractUser):
+    pass
+
+class Post(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    image = models.ImageField(upload_to='posts/', null=True, blank=True)
+    views = models.PositiveIntegerField(default=0)
+    published_date = models.DateTimeField(auto_now_add=True)
+
+
 class Client(models.Model):
     email = models.EmailField(unique=True)
     full_name = models.CharField(max_length=200)
