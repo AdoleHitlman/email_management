@@ -1,5 +1,11 @@
+<nav>
+    {% include 'navbar.html' %}
+</nav>
+<h1>Создание новой рассылки</h1>
+
 <form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Подтвердить</button>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <br>
+    <button type="submit">Подтвердить</button>
 </form>

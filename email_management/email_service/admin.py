@@ -17,7 +17,7 @@ class ClientAdmin(admin.ModelAdmin):
 
 @admin.register(MarketingEmail)
 class MarketingEmailAdmin(admin.ModelAdmin):
-    list_display = ('frequency', "status")
+    list_display = ('email_time', "status")
     #list_filter = ("status")
     search_fields = ('frequency', "status")
 

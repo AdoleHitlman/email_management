@@ -1,23 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Создание нового письма</title>
+    <title>Создание новой рассылки</title>
 </head>
 <body>
-    <nav>
-        <a href="{% url 'email_list' %}">Список писем</a>
-        <a href="{% url 'email_new' %}">Создать письмо</a>
-    </nav>
-    <h1>Создание нового письма</h1>
-    <form method="post">
-        {% csrf_token %}
-        <label for="subject">Тема:</label>
-        <input type="text" name="subject" id="subject">
-        <br>
-        <label for="body">Текст:</label>
-        <textarea name="body" id="body"></textarea>
-        <br>
-        <input type="submit" value="Отправить">
-    </form>
+<nav>
+    {% include 'navbar.html' %}
+</nav>
+<h1>Создание нового сообщения</h1>
+<form method="post">
+    <br>
+    <br>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <br>
+    <button type="submit">Подтвердить</button>
+</form>
 </body>
 </html>

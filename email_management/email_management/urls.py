@@ -17,15 +17,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from email_service.views import MainView, EmailDeleteView, EmailListView, EmailDetailView, CreateEmailView, \
-    EmailUpdateView
+from email_service.views import MainView, EmailNewsletterDeleteView, EmailListView, EmailDetailView, CreateEmailNewsletterView, \
+    EmailNewsletterUpdateView,CreateMessageView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', MainView.as_view(), name='main'),  # URL-шаблон для основной страницы
     path('emails/', EmailListView.as_view(), name='email_list'),  # URL-шаблон для списка рассылок
     path('email/<int:pk>/', EmailDetailView.as_view(), name='email_detail'),  # URL-шаблон для деталей рассылки
-    path('email/new/', CreateEmailView.as_view(), name='email_new'),  # URL-шаблон для создания новой рассылки
-    path('email/<int:pk>/edit/', EmailUpdateView.as_view(), name='email_edit'),  # URL-шаблон для обновления рассылки
-    path('email/<int:pk>/delete/', EmailDeleteView.as_view(), name='email_delete'),  # URL-шаблон для удаления рассылки
+    path('email/new/newsletter', CreateEmailNewsletterView.as_view(), name='email_new_newsletter'),# URL-шаблон для создания новой рассылки
+    path('email/new/message',CreateMessageView.as_view(),name='email_new_message'),
+    path('email/<int:pk>/edit/', EmailNewsletterUpdateView.as_view(), name='email_edit'),  # URL-шаблон для обновления рассылки
+    path('email/<int:pk>/delete/', EmailNewsletterDeleteView.as_view(), name='email_delete'),  # URL-шаблон для удаления рассылки
 ]

@@ -5,8 +5,7 @@
 </head>
 <body>
     <nav>
-        <a href="{% url 'email_list' %}">Список рассылок</a>
-        <a href="{% url 'email_new' %}">Создать рассылку</a>
+        {% include 'navbar.html' %}
     </nav>
     <h1>Редактирование рассылки</h1>
     <form method="post">
