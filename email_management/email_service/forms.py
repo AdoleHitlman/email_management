@@ -1,9 +1,7 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
-
 from .models import MarketingEmail
-from .models import User
 from datetime import datetime
+
 
 class MarketingEmailForm(forms.ModelForm):
     email_date = forms.DateField(
@@ -41,16 +39,3 @@ class MessageForm(forms.ModelForm):
             instance.save()
         return instance
 
-
-class RegisterForm(UserCreationForm):
-    email = forms.EmailField()
-
-    class Meta:
-        model = User
-        fields = ["username", "email", "password1", "password2"]
-
-    def save(self, commit=True):
-        instance = super().save(commit=False)
-        if commit:
-            instance.save()
-        return instance

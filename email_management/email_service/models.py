@@ -1,12 +1,8 @@
+
 from django.db import models
 from django.urls import reverse
-from django.contrib.auth.models import AbstractUser
-
-
 # Create your models here.
-class User(AbstractUser):
-    groups = models.ManyToManyField('auth.Group', related_name='custom_user_groups', blank=True)
-    user_permissions = models.ManyToManyField('auth.Permission', related_name='custom_user_permissions', blank=True)
+
 
 class Post(models.Model):
     title = models.CharField(max_length=200)
@@ -27,7 +23,7 @@ class Client(models.Model):
         verbose_name = 'Клиент'
         verbose_name_plural = 'Клиенты'
     def get_absolute_url(self):
-        return reverse('email_detail', args=[str(self.pk)])
+        return reverse('email_list')
 
 
 class Message(models.Model):
@@ -51,7 +47,7 @@ class MarketingEmail(models.Model):
     frequency = models.CharField(max_length=200, verbose_name="частота отправки")
     status = models.CharField(max_length=200, verbose_name="состояние")
     message = models.ManyToManyField('Message', related_name='newsletters', verbose_name='Сообщение')
-    clients = models.ManyToManyField('Client', related_name='newsletters', verbose_name='Кому')
+    clients = models.ManyToManyField('Clients', related_name='newsletters', verbose_name='Кому')
 
     CREATED = 'Создана'
     RUNNING = 'Запущена'

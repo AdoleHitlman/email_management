@@ -14,15 +14,21 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import path
 
+
+from django.contrib import admin
+from django.urls import path, include
+#from django.contrib import auth
+from users.views import RegisterView
 from email_service.views import MainView, EmailNewsletterDeleteView, EmailListView, EmailDetailView, CreateEmailNewsletterView, \
-    EmailNewsletterUpdateView,CreateMessageView
+    EmailNewsletterUpdateView,CreateMessageView,PreviewView
 
 urlpatterns = [
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('register/',RegisterView.as_view(),name='register'),
     path('admin/', admin.site.urls),
-    path('', MainView.as_view(), name='main'),  # URL-шаблон для основной страницы
+    path('', PreviewView.as_view(), name='preview'),
+    path('main', MainView.as_view(), name='main'),  # URL-шаблон для основной страницы
     path('emails/', EmailListView.as_view(), name='email_list'),  # URL-шаблон для списка рассылок
     path('email/<int:pk>/', EmailDetailView.as_view(), name='email_detail'),  # URL-шаблон для деталей рассылки
     path('email/new/newsletter', CreateEmailNewsletterView.as_view(), name='email_new_newsletter'),# URL-шаблон для создания новой рассылки

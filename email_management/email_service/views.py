@@ -12,19 +12,28 @@ from email_service.models import MarketingEmail,Message
 from email_service.forms import MarketingEmailForm
 
 # Create your views here.
+class PreviewView(TemplateView):
+    template_name = 'preview.html'
+    @method_decorator(login_required)
+    @method_decorator(cache_page(60 * 15))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
 
 class MainView(TemplateView):
     template_name = 'main.html'
 
     @method_decorator(cache_page(60 * 15))
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
+    @method_decorator(cache_page(60 * 15))
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['emails'] = MarketingEmail.objects.all()
         return context
+
+
 
 class EmailListView(ListView):
     model = MarketingEmail
