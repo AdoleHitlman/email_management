@@ -18,7 +18,7 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
-#from django.contrib import auth
+from django.contrib import auth
 from users.views import RegisterView
 from email_service.views import MainView, EmailNewsletterDeleteView, EmailListView, EmailDetailView, CreateEmailNewsletterView, \
     EmailNewsletterUpdateView,CreateMessageView,PreviewView

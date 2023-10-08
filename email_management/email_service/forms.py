@@ -1,7 +1,7 @@
 from django import forms
 from .models import MarketingEmail
 from datetime import datetime
-
+from .models import Client
 
 class MarketingEmailForm(forms.ModelForm):
     email_date = forms.DateField(
@@ -14,20 +14,20 @@ class MarketingEmailForm(forms.ModelForm):
         input_formats=['%H:%M'],
         widget=forms.TimeInput(attrs={'class': 'form-control', 'type': 'time'}),
     )
+    clients = forms.ModelMultipleChoiceField(queryset=Client.objects.all())
 
     class Meta:
         model = MarketingEmail
-        fields = ['email_date', 'email_time', 'frequency', 'clients', 'message']
+        fields = ['email_date', 'email_time', 'frequency','clients', 'message']
 
     def save(self, commit=True):
         instance = super().save(commit=False)
         email_date = self.cleaned_data['email_date']
         email_time = self.cleaned_data['email_time']
-        instance.email_time = datetime.combine(email_date,email_time)
+        instance.email_time = datetime.combine(email_date, email_time)
         if commit:
             instance.save()
         return instance
-
 
 class MessageForm(forms.ModelForm):
     class Meta:

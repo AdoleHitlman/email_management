@@ -1,6 +1,7 @@
 
 from django.db import models
 from django.urls import reverse
+from users.models import User
 # Create your models here.
 
 
@@ -11,19 +12,16 @@ class Post(models.Model):
     views = models.PositiveIntegerField(default=0)
     published_date = models.DateTimeField(auto_now_add=True)
 
-
 class Client(models.Model):
-    email = models.EmailField(unique=True)
-    full_name = models.CharField(max_length=200)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='client')
     comment = models.TextField(blank=True)
 
     def __str__(self):
-        return f"{self.full_name} ({self.email})"
+        return f"{self.user.full_name} ({self.user.email})"
+
     class Meta:
         verbose_name = 'Клиент'
         verbose_name_plural = 'Клиенты'
-    def get_absolute_url(self):
-        return reverse('email_list')
 
 
 class Message(models.Model):
@@ -47,7 +45,7 @@ class MarketingEmail(models.Model):
     frequency = models.CharField(max_length=200, verbose_name="частота отправки")
     status = models.CharField(max_length=200, verbose_name="состояние")
     message = models.ManyToManyField('Message', related_name='newsletters', verbose_name='Сообщение')
-    clients = models.ManyToManyField('Clients', related_name='newsletters', verbose_name='Кому')
+    clients = models.ManyToManyField('Client', related_name='newsletters', verbose_name='Кому')
 
     CREATED = 'Создана'
     RUNNING = 'Запущена'
@@ -78,6 +76,10 @@ class MarketingEmail(models.Model):
 
     def get_absolute_url(self):
         return reverse('email_detail', args=[str(self.pk)])
+
+
+
+
 class EmailLog(models.Model):
     last_attempt = models.DateTimeField(auto_now=True)
     attempt_status = models.BooleanField(default=False)

@@ -5,12 +5,6 @@ from email_service.models import Client, MarketingEmail, Message, EmailLog
 
 
 # Register your models here.
-@admin.register(Client)
-class ClientAdmin(admin.ModelAdmin):
-    list_display = ('full_name', 'email')
-    # list_filter =
-    search_fields = ('full_name', 'message')
-
 
 @admin.register(MarketingEmail)
 class MarketingEmailAdmin(admin.ModelAdmin):
