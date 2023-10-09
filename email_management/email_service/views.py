@@ -8,31 +8,47 @@ from django.views.generic import DetailView
 from django.views.generic import ListView
 from django.views.generic import TemplateView
 from django.views.generic import UpdateView
-from email_service.models import MarketingEmail,Message
-from email_service.forms import MarketingEmailForm
+
+from email_service.forms import MarketingEmailForm, BlogForm
+from email_service.models import MarketingEmail, Message, Blog
+
 
 # Create your views here.
 class PreviewView(TemplateView):
     template_name = 'preview.html'
+
     @method_decorator(cache_page(60 * 15))
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
 
-class MainView(TemplateView):
+class MainView(CreateView):
     template_name = 'main.html'
+    model = Blog
+    form_class = BlogForm
+    #@method_decorator(login_required)
+   #@method_decorator(cache_page(60 * 15))
+    # def dispatch(self, request, *args, **kwargs):
+    #     return super().dispatch(request, *args, **kwargs)
 
-    @method_decorator(login_required)
-    @method_decorator(cache_page(60 * 15))
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
+    def form_valid(self, form: BlogForm):
+        blog = form.save(commit=False)
+        #blog.created_by = self.request.user
+        blog.save()
+        return reverse_lazy('main')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['emails'] = MarketingEmail.objects.all()
+        context['blog_posts'] = Blog.objects.all()  # добавлено
         return context
 
+    # def post(self, request, *args, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['emails'] = MarketingEmail.objects.all()
+    #     context['blog_posts'] = Blog.objects.all()  # добавлено
+    #     return context
 
 
 class EmailListView(ListView):
@@ -55,11 +71,13 @@ class CreateEmailNewsletterView(CreateView):
     model = MarketingEmail
     template_name = 'email_form.html'
 
+
 class CreateMessageView(CreateView):
     success_url = reverse_lazy('main')
     model = Message
     template_name = 'email_new.html'
-    fields = ['subject','body']
+    fields = ['subject', 'body']
+
 
 class EmailNewsletterUpdateView(UpdateView):
     success_url = reverse_lazy('main')

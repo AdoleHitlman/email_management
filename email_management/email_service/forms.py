@@ -1,7 +1,9 @@
 from django import forms
 from .models import MarketingEmail
 from datetime import datetime
-from .models import Client
+from .models import Blog
+from users.models import User
+from django.urls import reverse
 
 class MarketingEmailForm(forms.ModelForm):
     email_date = forms.DateField(
@@ -14,7 +16,7 @@ class MarketingEmailForm(forms.ModelForm):
         input_formats=['%H:%M'],
         widget=forms.TimeInput(attrs={'class': 'form-control', 'type': 'time'}),
     )
-    clients = forms.ModelMultipleChoiceField(queryset=Client.objects.all())
+    clients = forms.ModelMultipleChoiceField(queryset=User.objects.all())
 
     class Meta:
         model = MarketingEmail
@@ -38,4 +40,9 @@ class MessageForm(forms.ModelForm):
         if commit:
             instance.save()
         return instance
+
+class BlogForm(forms.ModelForm):
+    class Meta:
+        model = Blog
+        fields = ['title', 'content', 'preview']
 

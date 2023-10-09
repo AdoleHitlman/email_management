@@ -2,6 +2,7 @@
 from django.db import models
 from django.urls import reverse
 from users.models import User
+from slugify import slugify
 # Create your models here.
 
 
@@ -12,16 +13,16 @@ class Post(models.Model):
     views = models.PositiveIntegerField(default=0)
     published_date = models.DateTimeField(auto_now_add=True)
 
-class Client(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='client')
-    comment = models.TextField(blank=True)
-
-    def __str__(self):
-        return f"{self.user.full_name} ({self.user.email})"
-
-    class Meta:
-        verbose_name = 'Клиент'
-        verbose_name_plural = 'Клиенты'
+# class Client(models.Model):
+#     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='client')
+#     comment = models.TextField(blank=True)
+#
+#     def __str__(self):
+#         return f"{self.user.full_name} ({self.user.email})"
+#
+#     class Meta:
+#         verbose_name = 'Клиент'
+#         verbose_name_plural = 'Клиенты'
 
 
 class Message(models.Model):
@@ -45,7 +46,7 @@ class MarketingEmail(models.Model):
     frequency = models.CharField(max_length=200, verbose_name="частота отправки")
     status = models.CharField(max_length=200, verbose_name="состояние")
     message = models.ManyToManyField('Message', related_name='newsletters', verbose_name='Сообщение')
-    clients = models.ManyToManyField('Client', related_name='newsletters', verbose_name='Кому')
+    clients = models.ManyToManyField(User, related_name='newsletters', verbose_name='Кому')
 
     CREATED = 'Создана'
     RUNNING = 'Запущена'
@@ -92,3 +93,26 @@ class EmailLog(models.Model):
         return f"Log for {self.message.subject} at {self.last_attempt}"
     def get_absolute_url(self):
         return reverse('email_detail', args=[str(self.pk)])
+
+class Blog(models.Model):
+    title = models.CharField(max_length=100)
+    slug = models.CharField(max_length=100, unique=True, blank=True)
+    content = models.TextField()
+    preview = models.ImageField(upload_to='previews/')
+    created_date = models.DateTimeField(auto_now_add=True)
+    is_published = models.BooleanField(default=False)
+    views_count = models.IntegerField(default=0)
+    created_by = models.ForeignKey(User,verbose_name='автор',on_delete=models.CASCADE,related_name='blog')
+
+    def __str__(self):
+        return f'{self.pk},{self.title}'
+
+    def save(self, *args, **kwargs):
+        # Автоматически генерируем slug из заголовка перед сохранением записи
+        self.slug = slugify(str(self.title))
+        super().save(*args, **kwargs)
+
+    class Meta:
+        ordering = ['-created_date']
+        verbose_name = 'Статья'  # Настройка для наименования одного объекта
+        verbose_name_plural = 'Статьи'  # Настройка для наименования набора объектов

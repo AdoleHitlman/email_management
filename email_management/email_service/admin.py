@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from email_service.models import Client, MarketingEmail, Message, EmailLog
+from email_service.models import  MarketingEmail, Message, EmailLog#Client
 
 
 

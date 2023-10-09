@@ -1,13 +1,21 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Главная</title>
-</head>
 <body>
 <nav>
     {% include 'navbar.html' %}
 </nav>
 <h1>Добро пожаловать на наше веб-приложение для рассылки писем!</h1>
 <p>Здесь вы можете просматривать, создавать и управлять своими рассылками.</p>
+
+<h2>Блог</h2>
+<br/>
+    <form method="POST" action="{% url 'main' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Создать новую статью</button>
+    </form>
+    <br/>
+{% for object in object_list %}
+    <h3>{{ object.title }}</h3>
+    <p>{{ object.content }}</p>
+    <!-- добавьте другие поля, такие как изображение, количество просмотров и дата публикации -->
+{% endfor %}
 </body>
-</html>

@@ -82,7 +82,7 @@ WSGI_APPLICATION = 'email_management.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'email_service',
+        'NAME': 'email_management',
         'USER': 'postgres',
         'HOST': '127.0.0.1',
         'PORT': '5432',
